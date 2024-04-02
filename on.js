@@ -10,7 +10,7 @@ function modrot(deg){
   rotation += deg;
   rotation %= 360;
 
-  renderWheel(rotation,[-4,circle], ["222", "E03", "FB0", "06F"], [0,0,0], [90,90,90]);
+  renderWheel(rotation,[-4,circle],  ["222", "C15", "DA3", "08D"], [0,0,0], [90,90,90]);//["222", "E03", "FB0", "06F"]
 }
 can = view;
 
