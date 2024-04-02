@@ -45,7 +45,7 @@ document.body.addEventListener("mouseup", e=>{
 });
 document.body.addEventListener("touchend", e=>{
   if(move === 2){
-    last = degdiff;
+    last = degdiff*0.8;
     degdiff = 0;
   }
   move = 0;
@@ -85,7 +85,7 @@ document.body.addEventListener("touchmove", e=>{
       wheelmove = Math.atan2(y1,x1) / (Math.PI/180);//initial position
       return;
     }
-    var degdiff = (Math.atan2(y1,x1) / (Math.PI/180)) - wheelmove;
+    degdiff = (Math.atan2(y1,x1) / (Math.PI/180)) - wheelmove;
     wheelmove = (Math.atan2(y1,x1) / (Math.PI/180));
     modrot(degdiff);
   }
