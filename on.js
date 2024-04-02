@@ -60,8 +60,8 @@ document.body.addEventListener("mousemove", e=>{
   }
   if(move===2){//2 is "wheel"
     last = 0;
-    x1 = e.x - can.cx;
-    y1 = e.y - can.cy;
+    x1 = e.pageX - can.cx;
+    y1 = e.pageY - can.cy;
     if(wheelmove === null){
       wheelmove = Math.atan2(y1,x1) / (Math.PI/180);//initial position
       return;
@@ -80,7 +80,7 @@ document.body.addEventListener("touchmove", e=>{
     last = 0;
     console.log(e);
     x1 = e.touches[0].pageX - can.cx;
-    y1 = e.pageY - can.cy;
+    y1 = e.touches[0].pageY - can.cy;
     if(wheelmove === null){
       wheelmove = Math.atan2(y1,x1) / (Math.PI/180);//initial position
       return;
