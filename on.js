@@ -5,12 +5,12 @@ var move = 0; //0 is "none", 1 is "slider", 2 is "wheel"
 var last = 0;
 var rotation = 0;
 
-
+circle = -3.5
 function modrot(deg){
   rotation += deg;
   rotation %= 360;
 
-  renderWheel(rotation,[-4,-3.5], ["222", "E03", "FB0", "06F"], [0,0,0], [90,90,90]);
+  renderWheel(rotation,[-4,circle], ["222", "E03", "FB0", "06F"], [0,0,0], [90,90,90]);
 }
 can = view;
 
@@ -32,25 +32,61 @@ requestAnimationFrame(anim);
 
 
 slider.addEventListener("mousedown", e=>{move = 1});
+slider.addEventListener("touchstart", e=>{move = 1});
 view.addEventListener("mousedown", e=>{move = 2});
+view.addEventListener("touchstart", e=>{move = 2});
 document.body.addEventListener("mouseup", e=>{
+  if(move === 2){
+    last = degdiff*0.8;
+    degdiff = 0;
+  }
   move = 0;
+  wheelmove = null;
+});
+document.body.addEventListener("touchend", e=>{
+  if(move === 2){
+    last = degdiff;
+    degdiff = 0;
+  }
+  move = 0;
+  wheelmove = null;
 });
 
-
+wheelmove = null;
+degdiff = 0;
 document.body.addEventListener("mousemove", e=>{
-  if(!move) return;//0 is "none"
-  if(move==1){//1 is "slider"
+  if(move===1){//1 is "slider"
     last = e.movementX / -1.5;
   }
-  if(move==2){//1 is "slider"
+  if(move===2){//2 is "wheel"
+    last = 0;
     x1 = e.x - can.cx;
     y1 = e.y - can.cy;
-    x2 = (e.x + e.movementX) - can.cx;
-    y2 = (e.y + e.movementY) - can.cy;
-    posOld = Math.atan2(y1,x1) / (Math.PI/180)
-    posNew = Math.atan2(y2,x2) / (Math.PI/180)
-    last = (posOld-posNew) * -2.6
+    if(wheelmove === null){
+      wheelmove = Math.atan2(y1,x1) / (Math.PI/180);//initial position
+      return;
+    }
+    degdiff = (Math.atan2(y1,x1) / (Math.PI/180)) - wheelmove;
+    wheelmove = (Math.atan2(y1,x1) / (Math.PI/180));
+    modrot(degdiff);
+  }
+});
+
+document.body.addEventListener("touchmove", e=>{
+  if(move===1){//1 is "slider"
+    last = e.touches[0].movementX / -1.5;
+  }
+  if(move===2){//2 is "wheel"
+    last = 0;
+    x1 = e.touches[0].x - can.cx;
+    y1 = e.y - can.cy;
+    if(wheelmove === null){
+      wheelmove = Math.atan2(y1,x1) / (Math.PI/180);//initial position
+      return;
+    }
+    degdiff = (Math.atan2(y1,x1) / (Math.PI/180)) - wheelmove;
+    wheelmove = (Math.atan2(y1,x1) / (Math.PI/180));
+    modrot(degdiff);
   }
 });
 
